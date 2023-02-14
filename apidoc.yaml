@@ -5,7 +5,7 @@ info:
     This is a sample Library Management Server based on the OpenAPI 3.0 specification.
   version: 0.0.0
 servers:
-  - url: /
+  - url: http://localhost:3000/
 tags:
   - name: books
     description: Everything about your Books
@@ -13,7 +13,12 @@ tags:
     description: Users
   - name: loans
     description: Loans
+  - name: publishers
+    description: about publishers
+    
+  
 paths:
+#users group
   /users:
     post:
       tags:
@@ -67,21 +72,21 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GetUserBody"
-  /users/{id}:
+  /user/{username}:
     get:
       tags:
         - users
-      summary: Get a user by id
-      description: Get a user by id
+      summary: Get a user by username
+      description: Get a user by  username
       operationId: getUserById
       parameters:
-        - name: id
+        - name: username
           in: path
-          description: ID of user to return
+          description: username of user to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            
       responses:
         "200":
           description: Successful operation
@@ -94,17 +99,17 @@ paths:
     post:
       tags:
         - users
-      summary: Update a user by id
-      description: Update a user by id
-      operationId: updateUserById
+      summary: Update a user by username
+      description: Update a user by username
+      operationId: updateUserByusername
       parameters:
-        - name: id
+        - name: username
           in: path
-          description: ID of user to return
+          description: username of user to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            
       requestBody:
         description: Update a user
         content:
@@ -123,21 +128,20 @@ paths:
           description: User not found
         "405":
           description: Invalid input
-  /users/{id}/delete:
+  /user/{username}/delete:
     post:
       tags:
         - users
-      summary: Delete a user by id
-      description: Delete a user by id
+      summary: Delete a user by username
+      description: Delete a user by username
       operationId: deleteUserById
       parameters:
-        - name: id
+        - name: username
           in: path
-          description: ID of user to return
+          description: username of user to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         "200":
           description: Successful operation
@@ -147,8 +151,285 @@ paths:
                 $ref: "#/components/schemas/GetUserBody"
         "404":
           description: User not found
+#Loans group:
+  /loans:
+    post:
+      tags:
+        - loans
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateLoan"
+        required: true
+      responses:
+        '200':
+          description: add loan for user
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/CreateLoan"
+    get:
+      tags:
+        - loans
+      responses:
+        '200':
+          description: get all loans
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: "#/components/schemas/Loans"
+  /loan/{id}:
+    post:
+      tags: 
+        - loans
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateLoan"
+        required: true
+      responses:
+        '200':
+          description: update the loan by loan id
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Loans"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+  /loan/delete/{id}: 
+    description: delete the loan by loan id 
+    delete:
+      tags: 
+        - loans
+      responses:
+        '200':
+          description: update the loan by loan id
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Loans"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+#Books group
+  /books:
+    description: books 
+    post:
+      tags:
+        - books
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Books"
+        required: true
+      responses:
+        '200':
+          description: add a new book
+          content:
+            application/json:
+              schema:
+                type: object 
+                $ref: "#/components/schemas/Books"
+    get:
+      tags:
+        - books
+      responses:
+        '200':
+          description: get all books 
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/Books'
+        default:
+          description: Everything else response
+          content:
+            text/plain:
+              schema:
+                type: string
+                default: "there is something wrong"
+  /books/{id}:
+    description: get book by id
+    get:
+      tags:
+        - books
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Books"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      
+  /books/{genre}: 
+    description: get books by genre
+    get:
+      tags:
+        - books
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: "#/components/schemas/Books"
+      parameters:
+        - name: genre
+          in: path
+          required: true
+          schema:
+            type: string
+          
+  /books/{author}:
+    description: get books by author
+    get:
+      tags:
+        - books
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: "#/components/schemas/Books"
+      parameters:
+        - name: author
+          in: path
+          required: true
+          schema:
+            type: string
+          
+  /books/delete/{id}:
+    description: delete the book
+    delete:
+      tags:
+        - books
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Books"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+#publishers group
+  /publishers:
+    description: about publishers
+    post:
+      tags:
+        - publishers
+      description: add publisher
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Publishers"
+    get:
+      tags:
+        - publishers
+      description: get all Publishers
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: "#/components/schemas/Publishers"
+  /publishers/{id}:
+    get:
+      tags:
+        - publishers
+      description: get publisher details by id
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Publishers"
+      parameters:
+        - name: id
+          in: path
+          description: id of publisher
+          content:
+            application/json:
+              schema:
+                type: integer
+          required: true
+
+  /publishers/delete/{id}:
+    delete:
+      tags:
+        - publishers
+      description: get publisher details by id
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Publishers"
+      parameters:
+        - name: id
+          in: path
+          description: id of publisher
+          content:
+            application/json:
+              schema:
+                type: integer
+          required: true
+
+
+
+            
+
+        
+
+
+
+
+          
+    
+
 components:
   schemas:
+#Users group
     SanitizedUserFields:
       type: object
       properties:
@@ -176,6 +457,9 @@ components:
         role:
           type: string
           enum: ["student", "staff", "admin"]
+        address:
+          type: string
+
     CreateUserBody:
       allOf:
         - $ref: "#/components/schemas/UserBody"
@@ -194,6 +478,122 @@ components:
               type: boolean
               default: true
               example: true
+#Loans  group            
+    Loans:
+      type: object
+      properties:
+          id:
+            type: integer
+          bookid: 
+            type: integer
+            format: int32
+          title: 
+            type: string
+            format: int64
+          authorname:
+            type: string
+          date:
+            type: string
+          period:
+            type: integer
+          isActive:
+            type: boolean
+            default: false
+      required:
+        - id
+        - bookid
+        - date
+        
+    CreateLoan:
+      type: object
+      description: Creates loan for user
+      properties:
+        username:
+          type: string
+          example: "nk123"
+        email:
+          type: string
+        role:
+          type: string
+          enum: ["student","staff","admin"]
+        books:
+          type: array
+          items:
+            allOf:
+              - $ref: "#/components/schemas/Loans"
+    
+    
+#books group
+    Books:
+      type: object
+      properties:
+        id: 
+          type: integer
+          format: int64
+        title:
+          type: string
+        authorname:
+          type: string
+        description:
+          type: string
+        isbn:
+          type: string
+        edition:
+          type: string
+        genre:
+          type: string
+        num_of_pages:
+          type: integer
+        date:
+          type: string
+        
+      required:
+        - id
+        - isbn
+  
+#publishers group:
+    Publishers:
+      description: publishers  schema
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name: 
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        books:
+          type: array
+          $ref: "#/components/schemas/Books"
+        phone: 
+          type: string
+
+        
+      
+      required:
+        - id
+        - email
+        - password
+    
+    
+    
+
+
+
+
+        
+     
+              
+
+
+            
+          
+
+
+
   securitySchemes:
     petstore_auth:
       type: oauth2
