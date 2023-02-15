@@ -183,6 +183,8 @@ paths:
                 $ref: "#/components/schemas/Loans"
   /loan/{id}:
     post:
+      security:
+        - adminToken: []
       tags: 
         - loans
       requestBody:
@@ -371,6 +373,9 @@ paths:
                 $ref: "#/components/schemas/Publishers"
   /publishers/{id}:
     get:
+      security:
+        - stafftoken: []
+      
       tags:
         - publishers
       description: get publisher details by id
@@ -570,39 +575,26 @@ components:
           $ref: "#/components/schemas/Books"
         phone: 
           type: string
-
-        
-      
       required:
         - id
         - email
         - password
-    
-    
-    
-
-
-
-
-        
-     
-              
-
-
-            
-          
-
-
-
   securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
+    # petstore_auth:
+    #   type: oauth2
+    #   flows:
+    #     implicit:
+    #       authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+    #       scopes:
+    #         write:pets: modify pets in your account
+    #         read:pets: read your pets
+    adminToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    stafftoken:
+      type: openIdConnect
+      openIdConnectUrl: https://petstore3.swagger.io/oauth/authorize
     api_key:
       type: apiKey
       name: api_key
