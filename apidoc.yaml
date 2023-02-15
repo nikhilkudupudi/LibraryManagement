@@ -128,7 +128,7 @@ paths:
           description: User not found
         "405":
           description: Invalid input
-  /user/{username}/delete:
+  /user/{id}/delete:
     post:
       tags:
         - users
@@ -136,7 +136,7 @@ paths:
       description: Delete a user by username
       operationId: deleteUserById
       parameters:
-        - name: username
+        - name: id
           in: path
           description: username of user to return
           required: true
@@ -168,7 +168,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/CreateLoan"
     get:
       tags:
@@ -180,7 +179,8 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: "#/components/schemas/Loans"
+                items:
+                  $ref: "#/components/schemas/Loans"
   /loan/{id}:
     post:
       security:
@@ -199,7 +199,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/Loans"
       parameters:
         - name: id
@@ -218,7 +217,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/Loans"
       parameters:
         - name: id
@@ -236,7 +234,7 @@ paths:
         content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Books"
+                $ref: "#/components/schemas/CreateBook"
         required: true
       responses:
         '200':
@@ -244,7 +242,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object 
                 $ref: "#/components/schemas/Books"
     get:
       tags:
@@ -256,7 +253,8 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: '#/components/schemas/Books'
+                items:
+                  $ref: '#/components/schemas/Books'
         default:
           description: Everything else response
           content:
@@ -275,7 +273,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/Books"
       parameters:
         - name: id
@@ -297,7 +294,8 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: "#/components/schemas/Books"
+                items:
+                  $ref: "#/components/schemas/Books"
       parameters:
         - name: genre
           in: path
@@ -317,7 +315,8 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: "#/components/schemas/Books"
+                items:
+                  $ref: "#/components/schemas/Books"
       parameters:
         - name: author
           in: path
@@ -336,7 +335,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/Books"
       parameters:
         - name: id
@@ -357,7 +355,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/Publishers"
     get:
       tags:
@@ -370,7 +367,8 @@ paths:
             application/json:
               schema:
                 type: array
-                $ref: "#/components/schemas/Publishers"
+                items:
+                  $ref: "#/components/schemas/Publishers"
   /publishers/{id}:
     get:
       security:
@@ -385,7 +383,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/Publishers"
       parameters:
         - name: id
@@ -408,7 +405,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/Publishers"
       parameters:
         - name: id
@@ -529,6 +525,26 @@ components:
     
     
 #books group
+    CreateBook:
+      type: object
+      properties:
+        title:
+          type: string
+        authorname:
+          type: string
+        description:
+          type: string
+        isbn:
+          type: integer
+        edition:
+          type: string
+        genre:
+          type: array
+        num_of_pages:
+          type: integer
+        date:
+          type: string
+        
     Books:
       type: object
       properties:
@@ -542,11 +558,11 @@ components:
         description:
           type: string
         isbn:
-          type: string
+          type: integer
         edition:
           type: string
         genre:
-          type: string
+          type: array
         num_of_pages:
           type: integer
         date:
@@ -572,7 +588,8 @@ components:
           type: string
         books:
           type: array
-          $ref: "#/components/schemas/Books"
+          items:
+            $ref: "#/components/schemas/Books"
         phone: 
           type: string
       required:
