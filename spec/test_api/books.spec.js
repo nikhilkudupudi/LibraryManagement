@@ -2,10 +2,11 @@ const supertest = require('supertest');
 const app=require('../../app');
 const books = require('../../models/books');
 const Books=require('../../models/books');
+
 describe("Books api",()=>{
     const req=supertest(app);
 // post /books
-    it("test for  adding book",async ()=>{
+    it("it is a test for add a book",async ()=>{
         const data={
             title: "A book",
             authorname: "test author",
@@ -28,7 +29,6 @@ describe("Books api",()=>{
 // get /books
     it("test for getting all books",async ()=>{
         const data={
-            
             title: "A book",
             authorname: "test author",
             description: "it is a book on writing",
@@ -43,11 +43,12 @@ describe("Books api",()=>{
         expect(body).toBeDefined();
         expect(body).toEqual(data);
 
-        const {status:getstatus,body: getbooks}=await (await req.get("/books"));
-        data.id=2;
+        const {status:getstatus,body: getbooks}=(await req.get("/books"));
+        // data.id=2;
         expect(getstatus).toBe(201);
-        expect(getbooks).toBeUndefined();
+        expect(getbooks).toBeDefined();
         expect(getbooks.length).toBeGreaterThan(0);
+         
     });
 // get  /books/{id}
     it("test for get book by id",async ()=>{
@@ -114,7 +115,7 @@ describe("Books api",()=>{
     expect(status).toBe(201);
     expect(body).toBeDefined();
     expect(body).toEqual(data);
-    const {status: rescode,body:deletedbook}=await req.delete(`/books/delete/${body.id}`)
+    const {status: rescode,body:deletedbook}= (await req.post(`/books/delete/${body.id}`).send())
     expect(rescode).toBe(201);
     expect(deletedbook).toBeDefined();
     expect(deletedbook).toEqual(body);

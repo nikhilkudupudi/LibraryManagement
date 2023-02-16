@@ -16,22 +16,6 @@ app.get("/", (_req, res) => {
     );
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.post("/users", (req, res) => {
-  console.log(req.body);
-  res.status(201).send({
-    id: Math.random() * 1e5,
-    name: req.body.name,
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    isActive: true,
-    role: "student",
-  });
-});
 
 
 // Path: app.js
