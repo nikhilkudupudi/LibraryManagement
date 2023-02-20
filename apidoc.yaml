@@ -542,8 +542,7 @@ components:
           type: array
         num_of_pages:
           type: integer
-        date:
-          type: string
+     
         
     Books:
       type: object
@@ -562,11 +561,10 @@ components:
         edition:
           type: string
         genre:
-          type: array
+          type: string
         num_of_pages:
           type: integer
-        date:
-          type: string
+        
         
       required:
         - id
