@@ -2,10 +2,13 @@
 const {Sequelize}=require('sequelize');
 const { Umzug, SequelizeStorage } = require("umzug");
 
-const SQL_DB_PATH=process.env['SQL_DB_PATH']||'./library.db';
+console.log("database",process.env['SQL_DB_PATH']);
+
+
+
 const sequelize=new Sequelize({
     dialect: 'sqlite',
-    storage: './dev.sqlite3',
+    storage: process.env['SQL_DB_PATH'],
     logging: false
 });
 // const sequelize=new Sequelize("sqlite::memory");
@@ -14,7 +17,8 @@ async function connectToDB(){
     try{
         await sequelize.authenticate();
         console.log("SQLite connectin established succesfully");
-//await runAllMigrations();
+        console.log("databse2",process.env['SQL_DB_PATH']);
+   // await runAllMigrations();
         return sequelize;
     }
     catch(err){

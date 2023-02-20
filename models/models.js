@@ -45,5 +45,5 @@ Books.init(book,{
 });
 
 sequelize.sync(Books);
-console.log(Books===sequelize.models.books);
+console.log("models");
 module.exports={Books};

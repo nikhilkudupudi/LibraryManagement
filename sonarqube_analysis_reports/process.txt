@@ -1,0 +1,13 @@
+run it in project folder:
+sonar-scanner.bat -D"sonar.projectKey=library_management" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=sqp_907a207680050ed4c21fa11f1bf61543ed3f97ae"
+
+install sonarqube  zip file  and run StartSonar.bat
+"process be up "
+then open localhost:9000
+
+check for library Management
+ and run check for the sonar analysis 
+
+ 
+
+Error: report parameter missing => stop all java.exe processses in tasskmanger> details 
