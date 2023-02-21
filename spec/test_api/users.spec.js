@@ -1,7 +1,15 @@
 const app=require('../../app');
 const supertest=require('supertest');
+const { connectToDB, disconnectFromDB } = require('../../database');
 
 describe("tests for users",()=>{
+beforeAll(async ()=>{
+await connectToDB();
+})
+afterAll(async ()=>{
+await disconnectFromDB();
+})
+
     const req=supertest(app);
 // post users
     it('test for users',async ()=>{
@@ -20,7 +28,7 @@ describe("tests for users",()=>{
         expect(body).toBeDefined();
         const {id}=body;
         expect(body).toEqual(data);
-        expect(id).toBeDefined();
+        expect(id).not.toBeNull();
     })
 // get /users
     it("test for user by username",async ()=>
@@ -68,9 +76,11 @@ it("test for user by username",async ()=>{
     expect(body).toEqual(data);
     expect(id).toBeDefined();
     const  {status: getuser,body: getbody}= await req.get(`/users/${body.username}`);
-    expect(getuser).toBe(201);
+    const {userid,userbody}=getbody;
+    expect(getuser).toBe(200);
     expect(getbody).toBeDefined();
-    expect(getbody).toEqual(body);
+    expect(getbody.username).toBe(body.username);
+    expect(userbody).toEqual(body);
 })
 // post /user/{username}
 it("test for user to update by username",async ()=>{
@@ -92,8 +102,8 @@ it("test for user to update by username",async ()=>{
     expect(body).toEqual(data);
     expect(id).toBeDefined();
 
-    const {status: updateuser,body: updatebody}= await (await req.post(`/users/${body.username}`).send({
-        username: "random user",
+    const {status: updateuser,body: updatebody}= await (await req.put(`/users/${body.username}`).send({
+        username: "random_user",
         firstName: "raj",
         lastName: "mars",
         email: "usetest@email.com",
@@ -130,10 +140,10 @@ it("test for user to delete by id", async () => {
     const {id}=body;
     expect(body).toEqual(data);
     expect(id).toBeDefined();
-    const {status: deletestatus,body:deletebody}=await req.post(`/users/${body.id}/delete`).send();
-    expect(deletestatus).toBe(201);
-    expect(deletebody).toBeDefined();
-    expect(deletebody).toEqual(body);
+    const {status: deletestatus,body:deletebody}=await req.delete(`/users/${body.id}/delete`).send();
+    expect(deletestatus).toBe(200);
+    expect(deletebody).toBeUnDefined();
+    expect(deletebody).not().toEqual(body);
 
 });
 

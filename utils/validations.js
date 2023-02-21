@@ -13,6 +13,30 @@ const createBookSchema=joi.object({
     date: joi.date().optional(),
 })
 
+const createUserSchema=joi.object({
+    username: joi.string().required(),
+    firstName: joi.string().optional(),
+    lastName: joi.string().optional(),
+    password: joi.string().required(),
+    email: joi.string().email().required(),
+    phone: joi.string().optional(),
+    address: joi.string().optional(),
+    role: joi.string().optional(),
+    loans: joi.array().optional(),
+
+});
+const createLoansScheme=joi.object({
+   username: joi.string().required(),
+   bookId: joi.number().integer().required(),
+   title: joi.string().optional(),
+   date: joi.string().optional(),
+   period: joi.number().required(),
+    isActive: joi.boolean().optional(),
+
+})
+
 module.exports={
-    createBookSchema
+    createBookSchema,
+    createUserSchema,
+    createLoansScheme
 }

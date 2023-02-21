@@ -3,7 +3,7 @@ const { Sequelize } = require('sequelize');
 const { Umzug, SequelizeStorage } = require("umzug");
 
 console.log("database", process.env['SQL_DB_PATH']);
-const sequelize = new Sequelize({
+let sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: process.env['SQL_DB_PATH'],
     logging: false
@@ -15,11 +15,11 @@ async function connectToDB() {
 
     try {
         console.log("databse2", process.env['SQL_DB_PATH']);
-        sequelize=new Sequelize({
-            dialect: 'sqlite',
-            storage: process.env['SQL_DB_PATH'],
-            logging: false
-        });
+        // sequelize=new Sequelize({
+        //     dialect: 'sqlite',
+        //     storage: process.env['SQL_DB_PATH'],
+        //     logging: false
+        // });
         
         await sequelize.authenticate();
         console.log("SQLite connectin established succesfully");

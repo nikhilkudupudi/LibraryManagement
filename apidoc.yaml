@@ -5,7 +5,7 @@ info:
     This is a sample Library Management Server based on the OpenAPI 3.0 specification.
   version: 0.0.0
 servers:
-  - url: http://localhost:3000/
+  - url: /
 tags:
   - name: books
     description: Everything about your Books
@@ -96,7 +96,7 @@ paths:
                 $ref: "#/components/schemas/GetUserBody"
         "404":
           description: User not found
-    post:
+    put:
       tags:
         - users
       summary: Update a user by username
@@ -129,7 +129,7 @@ paths:
         "405":
           description: Invalid input
   /user/{id}/delete:
-    post:
+    delete:
       tags:
         - users
       summary: Delete a user by username
@@ -168,7 +168,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateLoan"
+                $ref: "#/components/schemas/Loans"
     get:
       tags:
         - loans
@@ -191,8 +191,10 @@ paths:
         content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateLoan"
+                  allOf:
+                    - $ref: "#/components/schemas/Loans"
         required: true
+      
       responses:
         '200':
           description: update the loan by loan id
@@ -485,14 +487,14 @@ components:
       properties:
           id:
             type: integer
+          username:
+            type: string
           bookid: 
             type: integer
             format: int32
           title: 
             type: string
             format: int64
-          authorname:
-            type: string
           date:
             type: string
           period:
@@ -504,25 +506,28 @@ components:
         - id
         - bookid
         - date
-        
     CreateLoan:
       type: object
-      description: Creates loan for user
       properties:
         username:
           type: string
-          example: "nk123"
-        email:
+        bookid: 
+          type: integer
+          format: int32
+        title: 
           type: string
-        role:
+          format: int64
+        authorname:
           type: string
-          enum: ["student","staff","admin"]
-        books:
-          type: array
-          items:
-            allOf:
-              - $ref: "#/components/schemas/Loans"
-    
+        date:
+          type: string
+        period:
+          type: integer
+        isActive:
+          type: boolean
+          default: false
+        
+   
     
 #books group
     CreateBook:

@@ -82,7 +82,7 @@ describe("Books api", () => {
 
         const { status: booksstatus, body: getbooks } = await (req.get(`/books/${body.id}`));
         expect(booksstatus).toBe(201);
-       // expect(getbooks).toEqual(body);
+       expect(getbooks).toEqual(body);
     })
 
     // get  /books/{genre}

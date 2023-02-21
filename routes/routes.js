@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
-const {sequelize,disconnectFromDB}=require('../database')
-const {createBook}=require('../modules/bookmodule');
+const {sequelize}=require('../database')
+const {createBook,createUser,createLoan}=require('../modules/modules');
 // post /books
 router.post('/books',async  function(req, res){
     const body=req.body;
@@ -9,7 +9,7 @@ router.post('/books',async  function(req, res){
    const data= await createBook(body);
     console.log(data,"routes");
     //disconnectFromDB();
-    res.status(201).send(body);
+    res.status(201).send(data);
 });
 // get /books
 
@@ -134,17 +134,101 @@ router.delete("/books/delete/:id",(req,res)=>{
 
 //#########################################
 //users
-router.post('/users', function(req, res){
-    
+router.post('/users',async function(req, res){
+   
+    const user=req.body;
+    const response=await createUser(user);
+    res.status(201).send(response);
 });
-router.get('/users',async ()=>{
 
+router.get('/users',async ()=>{
+    try{
+        const users=await sequelize.users.findAllAsync();
+    res.status(200).send(users);
+    
+    }
+    catch(err){
+        res.status(400).send({message: err.message});
+    }
 })
 router.get('/user/:username', async (req,res)=>{
-
+    try{
+        const user=await sequelize.users.findOne({username:req.params.username});
+        res.status(200).send(user);
+    }
+    catch(err){
+        res.status(400).send({message: err.message});
+    }
 });
 
-router.post('user/:usernames', async (req,res)=>{});
-router.post('user/:id/delete', async (req,res )=>{});
+router.put('user/:username', async (req,res)=>{
+    try{
+        const id=req.params.username;
+        const user=await sequelize.users.findOne({username:id});
+        if(user){
+            const update=req.body;
+            const response=await sequelize.users.update(update,id);
+            console.log(response);
+            res.status(201).send(response);
+        }
+        else{
+            res.status(400).send({message:err.message});
+        }
+       
+    }
+    catch(err){
+        res.status(400).send({message:err.message});
+    }
+});
+router.delete('user/:id/delete', async (req,res )=>{
+       try{
+        const user_id = req.params.id;
+        const response=await sequelize.users.destroy({where:{id:user_id}});
+        console.log(response);
+        res.status(200).send(response);
+       }
+       catch{
+        res.status(400).send({message:err.message});
+       }
+});
+
+
+// ##################loans#
+
+router.post('/loans',async function(req, res){
+    const loan=req.body;
+    const response=await createLoan(loan);
+    res.status(201).send(response);
+});
+
+router.get('/loans',async (req,res)=>{
+  const loans=await sequelize.loans.findAll();
+  res.status(200).send(loans);
+})
+
+router.post('/loans/:id',async (req,res)=>{
+   try{
+    const id=req.params.id;
+    const loan=req.body;
+    const response=await sequelize.loans.update(loan,id);
+    res.status(200).send(response);
+
+   }
+   catch(err){
+    res.status(400).send({message:err.message});
+   }
+});
+
+router.delete('/loans/delete/:id', async (req, res) => {
+    try{
+        const id=req.params.id;
+    const response=await sequelize.loans.destroy({where:{id:id}});
+    console.log(response);
+    res.status(200).send(response);
+    }
+    catch (err) {
+        res.status(400).send({message: err.message});
+    }
+})
 
 module.exports=router;
