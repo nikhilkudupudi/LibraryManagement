@@ -5,7 +5,7 @@ const book={
     id:{
         type: UUID,
         primaryKey:true,
-        default: UUIDV4
+        defaultValue: UUIDV4
     },
     title:{
         type: STRING,
@@ -33,7 +33,7 @@ const book={
     },
     num_of_pages:{
         type: INTEGER,
-        default:1
+        defaultValue:1
     }
 };
 

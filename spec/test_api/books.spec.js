@@ -8,6 +8,7 @@ describe("Books api", () => {
     beforeAll(()=>{
    console.error("testing");     
     startDBServer();
+    
     })
     afterAll(()=>{
         //stopDBServer();
@@ -28,10 +29,10 @@ describe("Books api", () => {
         const { status, body } = (await req.post("/books").send(data));
         const response = { ...body };
         const { id, ...remaining } = response;
-        console.log(body);
+        console.log(body,response,remaining);
         expect(status).toBe(201);
         expect(body).toBeDefined();
-        //expect(id).toBeDefined();
+        expect(id).not.toBeNull();
         expect(remaining).toEqual(data);
 
     });
@@ -48,17 +49,16 @@ describe("Books api", () => {
             date: "09-04-2011"
         }
         const { status, body } = (await req.post("/books").send(data));
-        // expect(status).toBe(201);
-        // const {id,...remaining}=body;
+        expect(status).toBe(201);
+        const {id,...remaining}=body;
         
-        // expect(body).toBeDefined();
-        // expect(remaining).toEqual(data);
+        expect(body).toBeDefined();
+        expect(remaining).toEqual(data);
 
-        // const { status: getstatus, body: getbooks } = (await req.get("/books"));
-        // // data.id=2;
-        // expect(getstatus).toBe(200);
-        // expect(getbooks).toBeDefined();
-        //expect(getbooks.length).toBeGreaterThan(0);
+        const { status: getstatus, body: getbooks } = (await req.get("/books"));
+        expect(getstatus).toBe(200);
+        expect(getbooks).toBeDefined();
+        expect(getbooks.length).toBeGreaterThan(0);
 
     });
     // get  /books/{id}
@@ -129,10 +129,11 @@ describe("Books api", () => {
         expect(status).toBe(201);
         expect(body).toBeDefined();
         expect(remaining).toEqual(data);
+        console.log(body.id);
         const { status: rescode, body: deletedbook } = (await req.delete(`/books/delete/${body.id}`))
         expect(rescode).toBe(201);
-        expect(deletedbook).toBeDefined();
-        expect(deletedbook).toEqual(body);
+        expect(deletedbook).toBeUnDefined();
+        expect(deletedbook).toEqual({});
     })
 
 

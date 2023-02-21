@@ -5,15 +5,15 @@ const {createBook}=require('../modules/bookmodule');
 // post /books
 router.post('/books',async  function(req, res){
     const body=req.body;
+    console.log(sequelize.models);
    const data= await createBook(body);
-   
     console.log(data,"routes");
     //disconnectFromDB();
     res.status(201).send(body);
 });
 // get /books
 
-router.get('/books',(req,res)=>{
+router.get('/books',async (req,res)=>{
     try{
        const  books=[
         {
@@ -29,7 +29,7 @@ router.get('/books',(req,res)=>{
         }
        ]
 
-       const data= sequelize.models.books.findAll();
+       const data= await sequelize.models.books.findAll();
 
        res.status(200).send(data);
     }
@@ -122,11 +122,29 @@ router.delete("/books/delete/:id",(req,res)=>{
         
     // }
     const data= sequelize.models.books.destroy({where:{id:id}});
+    console.log(data);
     res.status(201).send(data);
     }
     catch (err){
     res.status(400).send({message: err.message});
     }
 })
+
+
+
+//#########################################
+//users
+router.post('/users', function(req, res){
+    
+});
+router.get('/users',async ()=>{
+
+})
+router.get('/user/:username', async (req,res)=>{
+
+});
+
+router.post('user/:usernames', async (req,res)=>{});
+router.post('user/:id/delete', async (req,res )=>{});
 
 module.exports=router;

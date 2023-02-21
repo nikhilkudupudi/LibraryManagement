@@ -7,7 +7,7 @@ async function createBook(book){
         
         const validateBook= await createBookSchema.validateAsync(book);
         const newBook=await Books.create(validateBook);
-        
+        console.log(newBook);
         return newBook;
     }
     catch(err){
