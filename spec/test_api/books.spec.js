@@ -105,7 +105,7 @@ describe("Books api", () => {
         expect(remaining).toEqual(data);
         expect(body.genre.length).toBeGreaterThan(0);
         const genres = body.genre
-        const { status: booksstatus, body: getbooks } = await (req.get(`/books/${genres[0]}`));
+        const { status: booksstatus, body: getbooks } = await (req.get(`/books/${genres}`));
         expect(booksstatus).toBe(201);
         expect(getbooks).toBeDefined();
         expect([getbooks].length).toBeGreaterThan(0);

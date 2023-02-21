@@ -7,9 +7,9 @@ describe(" tests for loan",  () => {
     beforeAll(async ()=>{
         await connectToDB();
         })
-        afterAll(async ()=>{
-        await disconnectFromDB();
-        })
+        // afterAll(async ()=>{
+        // await disconnectFromDB();
+        // })
 
   const req = supertest(app);
   it("should create a loan", async () => {
@@ -21,11 +21,10 @@ describe(" tests for loan",  () => {
       period: 2,
       isActive: false,
     };
-    const { status: poststatus, body: postbody } = await req
-      .post("/loans")
-      .send(loan);
-
-    const { id, ...remaining } = postbody;
+    const { status: poststatus, body: postbody } = await req.post("/loans").send(loan);
+    console.log("hello",postbody);
+    const { id, updatedAt,createdAt,...remaining } = postbody;
+    console.log(remaining);
     expect(poststatus).toBe(201);
     expect(postbody).toBeDefined();
     expect(id).toBeDefined();
@@ -45,16 +44,17 @@ describe(" tests for loan",  () => {
       .post("/loans")
       .send(loan);
 
-    const { id, ...remaining } = postbody;
+      const { id, updatedAt,createdAt,...remaining } = postbody;
     expect(poststatus).toBe(201);
     expect(postbody).toBeDefined();
     expect(id).toBeDefined();
     expect(remaining).toEqual(loan);
 
-    const { status, body } = await req.get("/books");
-    expect(status).toBe(200);
-    expect(body).toBeDefined();
-    expect(body.length).toBeGreaterThan(0);
+    const {status: getstatus,body: getbody} =await req.get("/loans");
+    
+    expect(getstatus).toBe(200);
+    expect(getbody).toBeDefined();
+    expect(getbody.length).toBeGreaterThan(0);
   });
 
   it("test for  update loan by id", async () => {
@@ -71,7 +71,7 @@ describe(" tests for loan",  () => {
       .post("/loans")
       .send(loan);
 
-    const { id, ...remaining } = postbody;
+      const { id, updatedAt,createdAt,...remaining } = postbody;
     expect(poststatus).toBe(201);
     expect(postbody).toBeDefined();
     expect(id).toBeDefined();
@@ -85,12 +85,11 @@ describe(" tests for loan",  () => {
       period: 2,
       isActive: true,
     };
-    const { status: updatestatus, body: updatebody } = req
-      .post(`/loan/${id}`)
-      .send(updated_loan);
-    expect(updatestatus).toBe(201);
-    expect(updatebody).toBeDefined();
-    expect(updatebody).toEqual(updated_loan);
+    const {status: updateStatus,body: updatedbody} =req.put(`/loan/${remaining.id}`)
+      const {updatedAt:updatedAt1,createdAt:createdAt1,...rem } = updatedbody;
+    expect(updateStatus).toBe(201);
+    expect(updatedbody).toBeDefined();
+    expect(rem).toEqual(updated_loan);
   });
 
   it("test for delete loan by id", async () => {
@@ -107,15 +106,15 @@ describe(" tests for loan",  () => {
       .post("/loans")
       .send(loan);
 
-    const { id, ...remaining } = postbody;
+      const { id, updatedAt,createdAt,...remaining } = postbody;
     expect(poststatus).toBe(201);
     expect(postbody).toBeDefined();
     expect(id).toBeDefined();
     expect(remaining).toEqual(loan);
 
-    const {status, body}=await req.delete(`/loan/delete/${postbody.id}`);
-    expect(status).toBe(200);
-    expect(body).toBeUnDefined();
-    expect(body).toEqual(postbody);
+    const {status: deletestatus, body:deletebody}=await req.delete(`/loan/delete/${postbody.id}`);
+    expect(deletestatus).toBe(200);
+    expect(deletebody).toBeUnDefined();
+    expect(deletebody).toEqual(postbody);
   });
 });

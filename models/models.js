@@ -56,9 +56,9 @@ const  loans={
     allowNull: false
    },
    date:{
-    type: DATE,
+    type: STRING,
     allowNull: false,
-    defaultValue: new Date()
+    
    },
    period:{
     type: INTEGER,
@@ -121,9 +121,9 @@ const users={
         allowNull: false
     },
     loans:{
-        type: DataTypes.ARRAY(Loans),
+        type: DataTypes.STRING,
         allowNull: true,
-        defaultValue:[]
+        
     }
 }
 

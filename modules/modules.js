@@ -1,4 +1,4 @@
-const {Books}=require("../models/models");
+const {Books,Users,Loans}=require("../models/models");
 
 const {createBookSchema,createLoansScheme,createUserSchema}=require("../utils/validations");
 
@@ -30,6 +30,7 @@ catch (err) {
 async function createLoan(loan){
     try{
         const validateLoan= await createLoansScheme.validateAsync(loan);
+        console.log(validateLoan);
         const newLoan=await Loans.create(validateLoan);
         console.log(newLoan);
         return newLoan;

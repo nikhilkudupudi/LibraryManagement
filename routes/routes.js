@@ -198,28 +198,45 @@ router.delete('user/:id/delete', async (req,res )=>{
 router.post('/loans',async function(req, res){
     const loan=req.body;
     const response=await createLoan(loan);
+    console.log(response);
     res.status(201).send(response);
 });
 
 router.get('/loans',async (req,res)=>{
-  const loans=await sequelize.loans.findAll();
+  const loans=await sequelize.models.loans.findAll();
+  console.log(loans);
   res.status(200).send(loans);
 })
 
-router.post('/loans/:id',async (req,res)=>{
-   try{
+router.put('/loans/:id', async(req, res, next) => {
     const id=req.params.id;
+    console.log(id);
     const loan=req.body;
-    const response=await sequelize.loans.update(loan,id);
-    res.status(200).send(response);
+    //const response=await sequelize.models.loans.findAll({id:id})
+    const response=await sequelize.models.loans.update(loan,{where:{id:id}});
+    const re=await sequelize.models.loans.findAll({id:id})
+    res.status(200).send(re);
 
-   }
-   catch(err){
-    res.status(400).send({message:err.message});
-   }
-});
+})
 
-router.delete('/loans/delete/:id', async (req, res) => {
+// router.put(`/loan/:id`,async (req,res)=>{
+//    try{
+//     // const id=req.params.id;
+//     // console.log(id);
+//     const loan=req.body;
+//     console.log("hello");
+//     //const response=await sequelize.models.loans.findAll({id:id})
+//     //const response=await sequelize.models.loans.update(loan,{where:{id:id}});
+//     console.log("update",response)
+//     res.status(201).send(response);
+
+//    }
+//    catch(err){
+//     res.status(400).send({message:err.message});
+//    }
+// })
+
+router.delete('/loan/delete/:id', async (req, res) => {
     try{
         const id=req.params.id;
     const response=await sequelize.loans.destroy({where:{id:id}});
