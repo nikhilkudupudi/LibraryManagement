@@ -14,6 +14,7 @@ const createBookSchema=joi.object({
 })
 
 const createUserSchema=joi.object({
+    id: joi.optional(),
     username: joi.string().required(),
     firstName: joi.string().optional(),
     lastName: joi.string().optional(),
@@ -26,6 +27,7 @@ const createUserSchema=joi.object({
 
 });
 const createLoansScheme=joi.object({
+    id:joi.optional(),
    username: joi.string().required(),
    bookid: joi.number().integer().required(),
    title: joi.string().optional(),

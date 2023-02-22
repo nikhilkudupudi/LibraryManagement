@@ -141,9 +141,9 @@ router.post('/users',async function(req, res){
     res.status(201).send(response);
 });
 
-router.get('/users',async ()=>{
+router.get('/users',async (req,res)=>{
     try{
-        const users=await sequelize.users.findAllAsync();
+        const users=await sequelize.models.users.findAll();
     res.status(200).send(users);
     
     }
@@ -153,7 +153,9 @@ router.get('/users',async ()=>{
 })
 router.get('/user/:username', async (req,res)=>{
     try{
-        const user=await sequelize.users.findOne({username:req.params.username});
+        console.log(req.params.username);
+        const user=await sequelize.models.users.findOne({where:{username: ""+req.params.username}});
+        console.log(user);
         res.status(200).send(user);
     }
     catch(err){
@@ -161,33 +163,29 @@ router.get('/user/:username', async (req,res)=>{
     }
 });
 
-router.put('user/:username', async (req,res)=>{
+router.put('/user/:username', async (req,res)=>{
     try{
         const id=req.params.username;
-        const user=await sequelize.users.findOne({username:id});
-        if(user){
+        //const user=await sequelize.users.findOne({username:id});
             const update=req.body;
-            const response=await sequelize.users.update(update,id);
-            console.log(response);
-            res.status(201).send(response);
-        }
-        else{
-            res.status(400).send({message:err.message});
-        }
+            const response=await sequelize.models.users.update(req.body,{where:{username:id}});
+            res.sendStatus(200);
+        
+       
        
     }
     catch(err){
         res.status(400).send({message:err.message});
     }
 });
-router.delete('user/:id/delete', async (req,res )=>{
+router.delete('/user/:id/delete', async (req,res )=>{
        try{
         const user_id = req.params.id;
-        const response=await sequelize.users.destroy({where:{id:user_id}});
+        const response=await sequelize.models.users.destroy({where:{id:user_id}});
         console.log(response);
-        res.status(200).send(response);
+        res.sendStatus(200)
        }
-       catch{
+       catch(err){
         res.status(400).send({message:err.message});
        }
 });
@@ -208,40 +206,37 @@ router.get('/loans',async (req,res)=>{
   res.status(200).send(loans);
 })
 
-router.put('/loans/:id', async(req, res, next) => {
+router.put('/loan/:id', async (req, res) => {
+  try{
     const id=req.params.id;
-    console.log(id);
+    console.log("inside",id);
     const loan=req.body;
     //const response=await sequelize.models.loans.findAll({id:id})
-    const response=await sequelize.models.loans.update(loan,{where:{id:id}});
-    const re=await sequelize.models.loans.findAll({id:id})
-    res.status(200).send(re);
-
+    const response= await sequelize.models.loans.update(loan,{where:{id:id}});
+    console.log(response);
+    const re=await  sequelize.models.loans.findByPk(id);
+    console.log(re);
+    res.sendStatus(200).send(response);
+    
+  }
+  catch(err){
+    console.error(err.message);
+    res.status(400).send({message:err.message});
+  }
 })
 
-// router.put(`/loan/:id`,async (req,res)=>{
-//    try{
-//     // const id=req.params.id;
-//     // console.log(id);
-//     const loan=req.body;
-//     console.log("hello");
-//     //const response=await sequelize.models.loans.findAll({id:id})
-//     //const response=await sequelize.models.loans.update(loan,{where:{id:id}});
-//     console.log("update",response)
-//     res.status(201).send(response);
-
-//    }
-//    catch(err){
-//     res.status(400).send({message:err.message});
-//    }
-// })
 
 router.delete('/loan/delete/:id', async (req, res) => {
     try{
         const id=req.params.id;
-    const response=await sequelize.loans.destroy({where:{id:id}});
+        console.log(id);
+    const response=await sequelize.models.loans.destroy({where:
+         {
+            id: id
+        }
+    });
     console.log(response);
-    res.status(200).send(response);
+    res.sendStatus(200).send(response);
     }
     catch (err) {
         res.status(400).send({message: err.message});

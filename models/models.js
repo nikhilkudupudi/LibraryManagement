@@ -121,8 +121,9 @@ const users={
         allowNull: false
     },
     loans:{
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.JSON),
         allowNull: true,
+        defaultValue: null
         
     }
 }
