@@ -1,10 +1,10 @@
-const {connectToDB,disconnectFromDB,runAllMigrations, dropAllTables}=require("../../database");
+const {connectToDB,disconnectFromDB, dropAllTables}=require("../../database");
 
 async function startDBServer(){
     console.log("Starting DBServer");
     try{
        
-       //console.log("server",process.env.SQL_DB_PATH);
+       
        process.env['SQL_DB_PATH'] = 'test.sqlite3';
        console.error("server",process.env['SQL_DB_PATH']);
        await connectToDB();

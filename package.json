@@ -16,6 +16,7 @@
     "joi": "^17.7.1",
     "mongoose": "^6.9.1",
     "sequelize": "^6.28.0",
+    "sequelize-auto-migrations": "^1.0.3",
     "sqlite3": "^5.1.4",
     "swagger-ui-express": "^4.6.0",
     "umzug": "^3.2.1",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "jasmine": "^4.5.0",
     "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.6.0",
     "supertest": "^6.3.3"
   }
 }

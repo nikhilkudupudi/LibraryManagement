@@ -9,9 +9,9 @@ describe(" tests for loan",  () => {
         await connectToDB();
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
         })
-        // afterAll(async ()=>{
-        // await disconnectFromDB();
-        // })
+        afterAll(async ()=>{
+        await disconnectFromDB();
+        })
 
   const req = supertest(app);
   it("should create a loan", async () => {
@@ -24,9 +24,7 @@ describe(" tests for loan",  () => {
       isActive: false,
     };
     const { status: poststatus, body: postbody } = await req.post("/loans").send(loan);
-    console.log("hello",postbody);
     const { id, updatedAt,createdAt,...remaining } = postbody;
-    console.log(remaining);
     expect(poststatus).toBe(201);
     expect(postbody).toBeDefined();
     expect(id).toBeDefined();
@@ -90,9 +88,9 @@ describe(" tests for loan",  () => {
     console.log(id);
     const response = await req.put(`/loan/${id}`).send(updated_loan);
     
-    // expect(updateStatus).toBe(201);
-    // expect(updatedbody).toBeDefined();
-    // expect(updatedbody).toEqual(updated_loan);
+    expect(response.status).toBe(200);
+    expect(response.text).toBe("OK");
+    
   });
 
   it("test for delete loan by id", async () => {

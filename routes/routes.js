@@ -166,8 +166,8 @@ router.get('/user/:username', async (req,res)=>{
 router.put('/user/:username', async (req,res)=>{
     try{
         const id=req.params.username;
-        //const user=await sequelize.users.findOne({username:id});
-            const update=req.body;
+        
+        
             const response=await sequelize.models.users.update(req.body,{where:{username:id}});
             res.sendStatus(200);
         
@@ -211,7 +211,7 @@ router.put('/loan/:id', async (req, res) => {
     const id=req.params.id;
     console.log("inside",id);
     const loan=req.body;
-    //const response=await sequelize.models.loans.findAll({id:id})
+    
     const response= await sequelize.models.loans.update(loan,{where:{id:id}});
     console.log(response);
     const re=await  sequelize.models.loans.findByPk(id);
