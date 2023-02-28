@@ -49,8 +49,20 @@ async function runAllMigrations() {
         }),
         logger: console
     })
+    const seeder = new Umzug({
+        migrations: {
+            glob: ["seeders/*.js", { cwd: __dirname }]
+        },
+        context: sequelize,
+        storage: new SequelizeStorage({
+            sequelize
+        }),
+        logger: console
+    })
     await migrator.up();
     console.log("all migrations performed successfully");
+    await seeder.up();
+    console.log("all seeders performed successfully");
 }
 
 async function dropAllTables() {

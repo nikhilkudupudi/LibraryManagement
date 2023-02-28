@@ -8,7 +8,7 @@ module.exports={
             id:{
                 type: UUID,
                 primaryKey:true,
-                default: UUIDV4
+                defaultValue: UUIDV4
             },
             title:{
                 type: STRING,
@@ -43,11 +43,13 @@ module.exports={
             },
             createdAt:{
                 type: DATE,
-                allowNull:false
+                allowNull:false,
+                defaultValue: new Date(),
             },
             updatedAt:{
                 type:DATE,
-                allowNull: false
+                allowNull: false,
+                defaultValue: new Date()
             },
 
         })

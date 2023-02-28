@@ -4,7 +4,7 @@ const { UUIDV4,DataTypes } = require('sequelize');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up ({context:{queryInterface}}, Sequelize) {
     return await queryInterface.createTable("users",{
       id:{
         type: DataTypes.UUID,

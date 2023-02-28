@@ -3,12 +3,12 @@ const {DataTypes}=require("sequelize");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up ({context:{queryInterface}}, Sequelize) {
     return await queryInterface.createTable("loans",{
       id:{
         type: DataTypes.UUID,
         primaryKey:true,
-        defaultValue: UUIDV4
+        defaultValue: DataTypes.UUIDV4
     },
     username: {
         type: DataTypes.STRING,
