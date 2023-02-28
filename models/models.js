@@ -77,7 +77,7 @@ Loans.init(loans,{
     modelName: "loans",
     timestamps: "true",
 });
-sequelize.sync(Loans);
+
 const users={
     id:{
         type: UUID,
@@ -121,7 +121,7 @@ const users={
         allowNull: false
     },
     loans:{
-        type: DataTypes.ARRAY(DataTypes.JSON),
+        type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: null
         
@@ -151,8 +151,6 @@ Users.init(users,{
 //     onDelete:"CASCADE"
 // });
 
-sequelize.sync(Books);
-sequelize.sync(Users);
 
 console.log("models");
 module.exports={Books,Users,Loans};

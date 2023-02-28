@@ -23,7 +23,7 @@ const createUserSchema=joi.object({
     phone: joi.string().optional(),
     address: joi.string().optional(),
     role: joi.string().optional(),
-    loans: joi.array().optional(),
+    loans: joi.optional(),
 
 });
 const createLoansScheme=joi.object({

@@ -31,7 +31,7 @@ module.exports={
             edition:{
                 type: STRING,
                 allowNull: true,
-                unique: true
+                
             },
             genre:{
                 type: STRING,
@@ -44,12 +44,12 @@ module.exports={
             createdAt:{
                 type: DATE,
                 allowNull:false,
-                defaultValue: new Date(),
+                
             },
             updatedAt:{
                 type:DATE,
                 allowNull: false,
-                defaultValue: new Date()
+                
             },
 
         })

@@ -60,8 +60,8 @@ describe(" tests for loan",  () => {
   it("test for  update loan by id", async () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
     const loan = {
-      username: "bobsmith",
-      bookid: 789,
+      username: "bobsmith"+Math.floor(Math.random() *100000),
+      bookid: Math.floor(Math.random() *100000),
       title: "1984",
       date: "2023-02-23",
       period: 3,
@@ -78,25 +78,24 @@ describe(" tests for loan",  () => {
     expect(id).toBeDefined();
     expect(remaining).toEqual(loan);
     const updated_loan = {
-      username: "maryjane",
-      bookid: 234,
+      username: "maryjane"+Math.floor(Math.random() *100000),
+      bookid: Math.floor(Math.random() *100000+1),
       title: "Pride and Prejudice",
       date: "2023-02-24",
       period: 2,
       isActive: true,
     };
-    console.log(id);
-    const response = await req.put(`/loan/${id}`).send(updated_loan);
+    const response = await req.put(`/loans/${id}`).send(updated_loan);
     
     expect(response.status).toBe(200);
-    expect(response.text).toBe("OK");
+    expect(response.text).toBe("updated successfully");
     
   });
 
   it("test for delete loan by id", async () => {
     const loan = {
       username: "jimmyjohn",
-      bookid: 567,
+      bookid: Math.floor(Math.random() *100000),
       title: "The Catcher in the Rye",
       date: "2023-02-25",
       period: 1,
@@ -113,8 +112,8 @@ describe(" tests for loan",  () => {
     expect(id).toBeDefined();
     expect(remaining).toEqual(loan);
 
-    const  response=await req.delete(`/loan/delete/${postbody.id}`);
+    const  response=await req.delete(`/loans/delete/${id}`);
     expect(response.status).toBe(200);
-    expect(response.text).toEqual("OK");
+    expect(response.text).toEqual("deleted successfully");
   });
 });

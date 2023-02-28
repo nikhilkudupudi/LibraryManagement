@@ -1,6 +1,6 @@
 'use strict';
 
-const { UUIDV4,DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -9,7 +9,6 @@ module.exports = {
       id:{
         type: DataTypes.UUID,
         primaryKey:true,
-        defaultValue: UUIDV4
     },
     username:{
         type: DataTypes.STRING,
@@ -48,9 +47,8 @@ module.exports = {
         allowNull: false
     },
     loans:{
-        type: DataTypes.ARRAY(DataTypes.JSON),
+        type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: null
         
     },
     createdAt:{

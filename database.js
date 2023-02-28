@@ -9,18 +9,10 @@ let sequelize = new Sequelize({
     logging: false
 });
 
-
-// const sequelize=new Sequelize("sqlite::memory");
 async function connectToDB() {
 
     try {
-        console.log("databse2", process.env['SQL_DB_PATH']);
-        // sequelize=new Sequelize({
-        //     dialect: 'sqlite',
-        //     storage: process.env['SQL_DB_PATH'],
-        //     logging: false
-        // });
-        
+       
         await sequelize.authenticate();
         console.log("SQLite connectin established succesfully");
         console.log("databse2", process.env['SQL_DB_PATH']);
@@ -34,7 +26,9 @@ async function connectToDB() {
 }
 
 async function disconnectFromDB() {
+    await dropAllTables();
     await sequelize.close();
+
     console.log("disconnected from the database");
 }
 
