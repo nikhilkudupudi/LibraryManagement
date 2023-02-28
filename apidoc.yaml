@@ -344,82 +344,6 @@ paths:
           required: true
           schema:
             type: integer
-#publishers group
-  /publishers:
-    description: about publishers
-    post:
-      tags:
-        - publishers
-      description: add publisher
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Publishers"
-    get:
-      tags:
-        - publishers
-      description: get all Publishers
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Publishers"
-  /publishers/{id}:
-    get:
-      security:
-        - stafftoken: []
-      
-      tags:
-        - publishers
-      description: get publisher details by id
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Publishers"
-      parameters:
-        - name: id
-          in: path
-          description: id of publisher
-          content:
-            application/json:
-              schema:
-                type: integer
-          required: true
-
-  /publishers/delete/{id}:
-    delete:
-      tags:
-        - publishers
-      description: get publisher details by id
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Publishers"
-      parameters:
-        - name: id
-          in: path
-          description: id of publisher
-          content:
-            application/json:
-              schema:
-                type: integer
-          required: true
-
-
-
             
 
         
@@ -462,6 +386,9 @@ components:
           enum: ["student", "staff", "admin"]
         address:
           type: string
+        loans:
+          type: integer
+          format: int32
 
     CreateUserBody:
       allOf:
@@ -575,39 +502,8 @@ components:
         - id
         - isbn
   
-#publishers group:
-    Publishers:
-      description: publishers  schema
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name: 
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        books:
-          type: array
-          items:
-            $ref: "#/components/schemas/Books"
-        phone: 
-          type: string
-      required:
-        - id
-        - email
-        - password
   securitySchemes:
-    # petstore_auth:
-    #   type: oauth2
-    #   flows:
-    #     implicit:
-    #       authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-    #       scopes:
-    #         write:pets: modify pets in your account
-    #         read:pets: read your pets
+
     adminToken:
       type: http
       scheme: bearer
