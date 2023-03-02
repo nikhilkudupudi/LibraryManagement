@@ -73,6 +73,13 @@ catch(err){
         throw new Error(err);
 }
  }
+
+ async function sortbooks(){
+    const books=await getBooks();
+    const orderbook=books.sort((a,b)=>(a.id-b.id));
+    console.log(orderbook);
+    return orderbook;
+ }
 module.exports = {
     createBook,
     getBookByAuthor,

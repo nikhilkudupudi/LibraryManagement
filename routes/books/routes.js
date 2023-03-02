@@ -14,7 +14,14 @@ router.get('/',async (req,res)=>{
     try{
       
 
-       const data= await Books.findAll();
+       const data= await Books.findAll({
+        order:[
+            ['id','ASC'],
+            ['isbn',"DESC"]
+        ]
+       });
+       const orderbook=data.sort((a,b)=>(a.isbn-b.isbn));
+       console.log(orderbook);
        if(data){
        res.status(200).send(data);
     }
