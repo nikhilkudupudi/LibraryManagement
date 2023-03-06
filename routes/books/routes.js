@@ -20,8 +20,6 @@ router.get('/',async (req,res)=>{
             ['isbn',"DESC"]
         ]
        });
-       const orderbook=data.sort((a,b)=>(a.isbn-b.isbn));
-       console.log(orderbook);
        if(data){
        res.status(200).send(data);
     }
